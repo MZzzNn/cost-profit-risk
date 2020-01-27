@@ -1,0 +1,955 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace project_mangment
+{
+    class Program
+    {
+
+        static void Main(string[] args)
+        {
+            for (; ; )
+            {
+                Console.BackgroundColor = ConsoleColor.DarkRed;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write(" -->   to choose the operation enter :- ");
+                Console.ResetColor();
+                //  Console.WriteLine("\n|\t\t\t\t\t");
+                Console.Write("---->  ");
+                Console.BackgroundColor = ConsoleColor.DarkYellow;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(" (profits | p) , (costs | c) , (risk | r)");
+                Console.ResetColor();
+
+
+                Console.WriteLine("|");
+
+                //Console.BackgroundColor = ConsoleColor.Gray;
+                //Console.ForegroundColor = ConsoleColor.Black;
+                Console.Write(" -->  the type of operation = ");
+                string input = Console.ReadLine();
+                // Console.ResetColor();
+
+                Console.WriteLine("\n");
+
+                switch (input)
+                {
+                    case "profits":
+                    case "p":
+                    case "1":
+                        profits();
+                        break;
+                    case "costs":
+                    case "c":
+                    case "2":
+                        costs();
+                        break;
+                    case "risk":
+                    case "r":
+                    case "3":
+                        risk();
+                        break;
+                    default:
+                        Console.Write("\t\t\t\t\t  ");
+                        Console.BackgroundColor = ConsoleColor.DarkRed;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Beep();
+                        Console.WriteLine("      E R R O R      ");
+                        Console.ResetColor();
+                        Console.Beep();
+                        Console.WriteLine();
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("\t\t\t\t\t..........................");
+                        Console.WriteLine();
+                        Console.WriteLine();
+                        break;
+
+
+                }
+                Console.BackgroundColor = ConsoleColor.DarkRed;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine();
+                Console.WriteLine("\t\t\tIf you want to solve another system,Press any key \t\t\t\t");
+                Console.ResetColor();
+                Console.ReadKey();
+                Console.Clear();
+            }
+        }
+
+
+        static void profits()
+        {
+            Console.WriteLine();
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine(" enter the matrix R*C");
+            Console.ResetColor();
+            Console.WriteLine("---------------------\n");
+            int r, c;
+
+
+            // size of the matrix
+            Console.Write(" R = ");
+            r = int.Parse(Console.ReadLine());
+            Console.Write(" C = ");
+            c = int.Parse(Console.ReadLine());
+
+            // input array
+            int[,] m1 = new int[r, c];
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.White;
+            // ask user to enter the value of each index
+            for (int i = 0; i < m1.GetLength(0); i++)
+            {
+                for (int j = 0; j < m1.GetLength(1); j++)
+                {
+                    Console.Write("[" + i + "," + j + "] = ");
+                    m1[i, j] = int.Parse(Console.ReadLine());
+                }
+            }
+
+
+            //Pessimistic pro
+            int[,] pes2 = new int[r, 1];
+
+            Console.BackgroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\n Calculate the Pessimistic :-");
+            Console.ResetColor();
+            Console.WriteLine("-----------------------------\n");
+
+
+            //Calculates the lowest value for each row
+            for (int i = 0; i < m1.GetLength(0); i++)
+            {
+                pes2[i, 0] = m1[i, 0];
+                for (int j = 0; j < m1.GetLength(1); j++)
+                {
+                    if (pes2[i, 0] >= m1[i, j])
+                    {
+                        pes2[i, 0] = m1[i, j];
+                    }
+                }
+            }
+
+            //Display the matrix and the lowest value for each row
+            Console.Write("     ");
+            for (int j = 0; j < m1.GetLength(1); j++)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("  S" + (j + 1));
+                Console.ResetColor();
+            }
+            Console.WriteLine("\n");
+            for (int i = 0; i < m1.GetLength(0); i++)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("  d" + (i + 1));
+                Console.ResetColor();
+                for (int j = 0; j < m1.GetLength(1); j++)
+                {
+
+                    Console.Write("   " + m1[i, j]);
+                }
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("   -->  ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(pes2[i, 0]);
+                Console.ResetColor();
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+
+            //Calculate the largest value in them
+            int maxp = pes2[0, 0];
+            for (int i = 0; i < pes2.GetLength(0); i++)
+            {
+                if (maxp <= pes2[i, 0])
+                {
+                    maxp = pes2[i, 0];
+                }
+            }
+
+            //Display the Pessimistic
+            Console.Write("   ");
+            Console.BackgroundColor = ConsoleColor.DarkGreen;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(" Pessimistic = " + maxp);
+            Console.ResetColor();
+
+
+
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("     ************");
+
+
+
+            //Optemistic pro
+
+            Console.BackgroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\n Calculate the Optemistic :-");
+            Console.ResetColor();
+            Console.WriteLine("----------------------------\n");
+            int[,] opt2 = new int[r, 1];
+
+            //Calculates the largest value for each row
+            for (int i = 0; i < m1.GetLength(0); i++)
+            {
+                opt2[i, 0] = m1[i, 0];
+                for (int j = 0; j < m1.GetLength(1); j++)
+                {
+                    if (opt2[i, 0] <= m1[i, j])
+                    {
+                        opt2[i, 0] = m1[i, j];
+                    }
+                }
+            }
+
+            //Display the matrix and the largest value for each row
+            Console.Write("     ");
+            for (int j = 0; j < m1.GetLength(1); j++)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("  S" + (j + 1));
+                Console.ResetColor();
+            }
+            Console.WriteLine("\n");
+            for (int i = 0; i < m1.GetLength(0); i++)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("  d" + (i + 1));
+                Console.ResetColor();
+                for (int j = 0; j < m1.GetLength(1); j++)
+                {
+
+                    Console.Write("   " + m1[i, j]);
+                }
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("   -->  ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(opt2[i, 0]);
+                Console.ResetColor();
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+
+            //Calculate the largest value in them
+            int maxo = opt2[0, 0];
+            for (int i = 0; i < pes2.GetLength(0); i++)
+            {
+                if (maxo <= opt2[i, 0])
+                {
+                    maxo = opt2[i, 0];
+                }
+            }
+
+            //Display the Optemistic
+            Console.Write("   ");
+            Console.BackgroundColor = ConsoleColor.DarkGreen;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(" Optemistic = " + maxo);
+            Console.ResetColor();
+
+
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("     ************");
+
+
+
+
+
+            //Regret pro
+            Console.BackgroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\n Calculate the Regret :-");
+            Console.ResetColor();
+            Console.WriteLine("-------------------------\n");
+            int[,] reg2 = new int[1, c];
+
+            //Calculates the largest value for each column
+            for (int i = 0; i < m1.GetLength(1); i++)
+            {
+                reg2[0, i] = m1[0, i];
+                for (int j = 0; j < m1.GetLength(0); j++)
+                {
+                    if (reg2[0, i] <= m1[j, i])
+                    {
+                        reg2[0, i] = m1[j, i];
+                    }
+                }
+            }
+
+            //Display the matrix 
+            for (int i = 0; i < m1.GetLength(0); i++)
+            {
+                Console.Write("    ");
+
+                for (int j = 0; j < m1.GetLength(1); j++)
+                {
+
+                    Console.Write("   " + m1[i, j]);
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+
+
+            //Display the largest value for each column
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("    ");
+            for (int i = 0; i < m1.GetLength(1); i++)
+            {
+                Console.Write("   |");
+            }
+            Console.WriteLine();
+            Console.Write("    ");
+            for (int i = 0; i < m1.GetLength(1); i++)
+            {
+                Console.Write("   v");
+            }
+            Console.ResetColor();
+            Console.WriteLine("\n");
+            Console.Write("    ");
+            for (int i = 0; i < reg2.GetLength(1); i++)
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write("   " + reg2[0, i]);
+                Console.ResetColor();
+            }
+
+            int[,] mainreg2 = new int[r, c];
+
+
+            //Subtract the column values with the largest value for each column
+            for (int i = 0; i < m1.GetLength(1); i++)
+            {
+                for (int j = 0; j < m1.GetLength(0); j++)
+                {
+                    mainreg2[j, i] = reg2[0, i] - m1[j, i];
+                }
+                Console.WriteLine();
+            }
+
+            //Calculates the largest value for each row in the new matrix
+            int[,] regret1 = new int[r, 1];
+            for (int i = 0; i < mainreg2.GetLength(0); i++)
+            {
+                regret1[i, 0] = mainreg2[i, 0];
+                for (int j = 0; j < mainreg2.GetLength(1); j++)
+                {
+                    if (regret1[i, 0] <= mainreg2[i, j])
+                    {
+                        regret1[i, 0] = mainreg2[i, j];
+                    }
+                }
+            }
+            Console.WriteLine();
+            //Display the matrix and the largest value for each row
+            Console.Write("     ");
+            for (int j = 0; j < m1.GetLength(1); j++)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("  S" + (j + 1));
+                Console.ResetColor();
+            }
+            Console.WriteLine("\n");
+            for (int i = 0; i < mainreg2.GetLength(0); i++)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("  d" + (i + 1));
+                Console.ResetColor();
+                for (int j = 0; j < mainreg2.GetLength(1); j++)
+                {
+
+                    Console.Write("   " + mainreg2[i, j]);
+                }
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("   -->  ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(regret1[i, 0]);
+                Console.ResetColor();
+                Console.WriteLine();
+            }
+
+            //Calculate the lowest value in them
+            int minr = regret1[0, 0];
+            for (int i = 0; i < pes2.GetLength(0); i++)
+            {
+                if (minr >= regret1[i, 0])
+                {
+                    minr = regret1[i, 0];
+                }
+            }
+
+            //Display the  Regret
+            Console.Write("\n\t");
+            Console.BackgroundColor = ConsoleColor.DarkGreen;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(" Regret = " + minr);
+            Console.ResetColor();
+
+
+
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\t\t\t\t\t..........................");
+            Console.WriteLine();
+
+        }
+
+
+
+        //------------------------------------
+
+
+
+        static void costs()
+        {
+            Console.WriteLine();
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine(" enter the matrix R*C");
+            Console.ResetColor();
+            Console.WriteLine("---------------------\n");
+            int r, c;
+
+            // size of the matrix
+            Console.Write(" R = ");
+            r = int.Parse(Console.ReadLine());
+            Console.Write(" C = ");
+            c = int.Parse(Console.ReadLine());
+
+            // input array
+            int[,] m1 = new int[r, c];
+            Console.WriteLine();
+
+            // ask user to enter the value of each index
+            Console.ForegroundColor = ConsoleColor.White;
+            for (int i = 0; i < m1.GetLength(0); i++)
+            {
+                for (int j = 0; j < m1.GetLength(1); j++)
+                {
+                    Console.Write("[" + i + "," + j + "] = ");
+                    m1[i, j] = int.Parse(Console.ReadLine());
+                }
+            }
+
+
+            //Pessimistic cos
+            Console.BackgroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\n Calculate the Pessimistic :-");
+            Console.ResetColor();
+            Console.WriteLine("-----------------------------\n");
+            int[,] pes1 = new int[r, 1];
+
+
+            //Calculates the largest value for each row
+            for (int i = 0; i < m1.GetLength(0); i++)
+            {
+                pes1[i, 0] = m1[i, 0];
+                for (int j = 0; j < m1.GetLength(1); j++)
+                {
+                    if (pes1[i, 0] <= m1[i, j])
+                    {
+                        pes1[i, 0] = m1[i, j];
+                    }
+                }
+            }
+
+
+            //Display the matrix and the largest value for each row
+            Console.Write("     ");
+            for (int j = 0; j < m1.GetLength(1); j++)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("  S" + (j + 1));
+                Console.ResetColor();
+            }
+            Console.WriteLine("\n");
+            for (int i = 0; i < m1.GetLength(0); i++)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("  d" + (i + 1));
+                Console.ResetColor();
+                for (int j = 0; j < m1.GetLength(1); j++)
+                {
+
+                    Console.Write("   " + m1[i, j]);
+                }
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("   -->  ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(pes1[i, 0]);
+                Console.ResetColor();
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+
+            //Calculate the lowest value in them
+            int minp = pes1[0, 0];
+            for (int i = 0; i < pes1.GetLength(0); i++)
+            {
+                if (minp >= pes1[i, 0])
+                {
+                    minp = pes1[i, 0];
+                }
+            }
+
+            //Display the Pessimistic
+            Console.Write("   ");
+            Console.BackgroundColor = ConsoleColor.DarkGreen;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(" Pessimistic = " + minp);
+            Console.ResetColor();
+
+
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("     ************");
+
+
+
+            //Optemistic cos
+
+            Console.BackgroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\n Calculate the Optemistic :-");
+            Console.ResetColor();
+            Console.WriteLine("----------------------------\n");
+            int[,] opt1 = new int[r, 1];
+
+            //Calculates the lowest value for each row
+            for (int i = 0; i < m1.GetLength(0); i++)
+            {
+                opt1[i, 0] = m1[i, 0];
+                for (int j = 0; j < m1.GetLength(1); j++)
+                {
+                    if (opt1[i, 0] >= m1[i, j])
+                    {
+                        opt1[i, 0] = m1[i, j];
+                    }
+                }
+            }
+
+            //Display the matrix and the lowest value for each row
+            Console.Write("     ");
+            for (int j = 0; j < m1.GetLength(1); j++)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("  S" + (j + 1));
+                Console.ResetColor();
+            }
+            Console.WriteLine("\n");
+            for (int i = 0; i < m1.GetLength(0); i++)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("  d" + (i + 1));
+                Console.ResetColor();
+                for (int j = 0; j < m1.GetLength(1); j++)
+                {
+
+                    Console.Write("   " + m1[i, j]);
+                }
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("   -->  ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(opt1[i, 0]);
+                Console.ResetColor();
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+
+            //Calculate the lowest value in them
+            int mino = opt1[0, 0];
+            for (int i = 0; i < pes1.GetLength(0); i++)
+            {
+                if (mino >= opt1[i, 0])
+                {
+                    mino = opt1[i, 0];
+                }
+            }
+
+            //Display the Optemistic
+            Console.Write("   ");
+            Console.BackgroundColor = ConsoleColor.DarkGreen;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(" Optemistic = " + mino);
+            Console.ResetColor();
+
+
+
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("     ************");
+
+
+
+            //Regret cos
+
+            Console.BackgroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\n Calculate the Regret :-");
+            Console.ResetColor();
+            Console.WriteLine("------------------------\n");
+            int[,] reg1 = new int[1, c];
+
+            //Calculates the lowest value for each column
+            for (int i = 0; i < m1.GetLength(1); i++)
+            {
+                reg1[0, i] = m1[0, i];
+                for (int j = 0; j < m1.GetLength(0); j++)
+                {
+                    if (reg1[0, i] >= m1[j, i])
+                    {
+                        reg1[0, i] = m1[j, i];
+                    }
+                }
+            }
+
+            //Display the matrix 
+            for (int i = 0; i < m1.GetLength(0); i++)
+            {
+                Console.Write("    ");
+                for (int j = 0; j < m1.GetLength(1); j++)
+                {
+
+                    Console.Write("   " + m1[i, j]);
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+
+
+
+
+            //Display the lowest value for each column
+            Console.Write("    ");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            for (int i = 0; i < m1.GetLength(1); i++)
+            {
+                Console.Write("   |");
+            }
+            Console.WriteLine();
+            Console.Write("    ");
+            for (int i = 0; i < m1.GetLength(1); i++)
+            {
+                Console.Write("   v");
+            }
+            Console.ResetColor();
+            Console.WriteLine("\n");
+            Console.Write("    ");
+            for (int i = 0; i < m1.GetLength(1); i++)
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write("   " + reg1[0, i]);
+                Console.ResetColor();
+            }
+
+            int[,] mainreg1 = new int[r, c];
+
+
+            //Subtract the column values with the lowest value for each column
+            for (int i = 0; i < m1.GetLength(1); i++)
+            {
+                for (int j = 0; j < m1.GetLength(0); j++)
+                {
+                    mainreg1[j, i] = m1[j, i] - reg1[0, i];
+                }
+            }
+            Console.WriteLine();
+
+            //Calculates the largest value for each row in the new matrix
+            int[,] regret1 = new int[r, 1];
+            for (int i = 0; i < mainreg1.GetLength(0); i++)
+            {
+                regret1[i, 0] = mainreg1[i, 0];
+                for (int j = 0; j < mainreg1.GetLength(1); j++)
+                {
+                    if (regret1[i, 0] <= mainreg1[i, j])
+                    {
+                        regret1[i, 0] = mainreg1[i, j];
+                    }
+                }
+            }
+            Console.WriteLine();
+            //Display the matrix and the largest value for each row
+            Console.Write("\n\n     ");
+            for (int j = 0; j < m1.GetLength(1); j++)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("  S" + (j + 1));
+                Console.ResetColor();
+            }
+            Console.WriteLine("\n");
+            for (int i = 0; i < mainreg1.GetLength(0); i++)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("  d" + (i + 1));
+                Console.ResetColor();
+                for (int j = 0; j < mainreg1.GetLength(1); j++)
+                {
+
+                    Console.Write("   " + mainreg1[i, j]);
+
+                }
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("   -->  ");
+                Console.ResetColor();
+
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(regret1[i, 0]);
+                Console.ResetColor();
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+
+            //Calculate the lowest value in them
+            int minr = regret1[0, 0];
+            for (int i = 0; i < pes1.GetLength(0); i++)
+            {
+                if (minr >= regret1[i, 0])
+                {
+                    minr = regret1[i, 0];
+                }
+            }
+
+            //Display the  Regret
+            Console.Write("\t");
+            Console.BackgroundColor = ConsoleColor.DarkGreen;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(" Regret = " + minr);
+            Console.ResetColor();
+
+
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\t\t\t\t\t..........................");
+            Console.WriteLine();
+        }
+        static void risk()
+        {
+
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine(" enter the matrix R*C");
+            Console.ResetColor();
+            Console.WriteLine("---------------------\n");
+            int r, c;
+
+            // size of the matrix
+            Console.Write(" R = ");
+            r = int.Parse(Console.ReadLine());
+            Console.Write(" C = ");
+            c = int.Parse(Console.ReadLine());
+
+            double[] s1 = new double[c];
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.White;
+            for (int i = 0; i < s1.GetLength(0); i++)
+            {
+
+                Console.Write("S{0} = ", (i + 1));
+                s1[i] = double.Parse(Console.ReadLine());
+
+            }
+
+            // input array
+            int[,] m1 = new int[r, c];
+            Console.WriteLine();
+
+            // ask user to enter the value of each index
+            for (int i = 0; i < m1.GetLength(0); i++)
+            {
+                for (int j = 0; j < m1.GetLength(1); j++)
+                {
+                    Console.Write("[" + i + "," + j + "] = ");
+                    m1[i, j] = int.Parse(Console.ReadLine());
+                }
+            }
+
+
+
+
+
+
+
+
+            Console.WriteLine();
+            Console.Write("             ");
+            for (int j = 0; j < m1.GetLength(1); j++)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("   S{0} = {1}", (j + 1), s1[j] + "%");
+                Console.ResetColor();
+            }
+            Console.WriteLine("\n");
+            for (int i = 0; i < m1.GetLength(0); i++)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("     MODEL " + (i + 1));
+                Console.ResetColor();
+                for (int j = 0; j < m1.GetLength(1); j++)
+                {
+
+                    Console.Write("    $" + m1[i, j] + ".000");
+                }
+                Console.WriteLine("\n");
+            }
+
+            Console.BackgroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\nThe value of information under risk :-");
+            Console.ResetColor();
+            Console.WriteLine("--------------------------------------\n\n");
+
+
+            double[,] risk = new double[r, 1];
+
+            for (int i = 0; i < m1.GetLength(0); i++)
+            {
+                for (int j = 0; j < m1.GetLength(1); j++)
+                {
+                    risk[i, 0] = risk[i, 0] + ((m1[i, j] * 1000) * (s1[j] / 100));
+                }
+
+            }
+
+
+            for (int i = 0; i < m1.GetLength(0); i++)
+            {
+                Console.WriteLine("MODEL {0} = {1}", (i + 1), (risk[i, 0]));
+            }
+            Double max = (risk[0, 0] / 1000);
+            for (int i = 0; i < risk.GetLength(0); i++)
+            {
+                if (max <= (risk[i, 0] / 1000))
+                {
+                    max = (risk[i, 0] / 1000);
+                }
+            }
+
+
+            Console.Write("\n\n");
+            Console.BackgroundColor = ConsoleColor.DarkMagenta;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Expected Value (under risk) = " + (max * 1000));
+            Console.ResetColor();
+
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\n\t**********************\n");
+
+            Console.BackgroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\nThe value of information under certainly :-");
+            Console.ResetColor();
+            Console.WriteLine("-------------------------------------------\n\n");
+            double[,] maxr = new double[1, c];
+
+            //Calculates the largest value for each column
+            for (int i = 0; i < m1.GetLength(1); i++)
+            {
+                maxr[0, i] = m1[0, i];
+                for (int j = 0; j < m1.GetLength(0); j++)
+                {
+                    if (maxr[0, i] <= m1[j, i])
+                    {
+                        maxr[0, i] = m1[j, i];
+                    }
+                }
+            }
+
+
+
+
+            Console.Write("                ");
+            for (int j = 0; j < m1.GetLength(1); j++)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("   S{0}     ", (j + 1));
+                Console.ResetColor();
+            }
+            Console.WriteLine();
+
+            //for (int i = 0; i < m1.GetLength(0); i++)
+            //{
+            //    Console.ForegroundColor = ConsoleColor.DarkGray;
+            //    Console.Write("     MODEL " + (i + 1));
+            //    Console.ResetColor();
+            //    for (int j = 0; j < m1.GetLength(1); j++)
+            //    {
+
+            //        Console.Write("    $" + m1[i, j] + ".000");
+            //    }
+            //    Console.WriteLine("\n");
+            //}
+
+
+
+            //Display the largest value for each column
+            Console.Write("          ");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            for (int i = 0; i < m1.GetLength(1); i++)
+            {
+                Console.Write("         |");
+            }
+            Console.WriteLine();
+            Console.Write("          ");
+            for (int i = 0; i < m1.GetLength(1); i++)
+            {
+                Console.Write("         v");
+            }
+            Console.ResetColor();
+            Console.Write("\n             ");
+            for (int i = 0; i < maxr.GetLength(1); i++)
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write("    " + maxr[0, i] + ".000");
+                Console.ResetColor();
+            }
+
+            double urisk = 0;
+            for (int i = 0; i < m1.GetLength(1); i++)
+            {
+                urisk = ((maxr[0, i] * 1000) + (s1[i] / 1000));
+            }
+
+            Console.Write("\n\n\n");
+            Console.BackgroundColor = ConsoleColor.DarkMagenta;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Expected Value (under certain) = " + urisk);
+            Console.ResetColor();
+
+
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\n\t**********************\n");
+
+
+            Double evpi = 0;
+            evpi = urisk - (max * 1000);
+            Console.Write("\n   ");
+            Console.BackgroundColor = ConsoleColor.DarkGreen;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("EVPI = {0} - {1} = {2}", urisk, (max * 1000), evpi);
+            Console.ResetColor();
+
+
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\t\t\t\t\t..........................");
+            Console.WriteLine();
+
+
+        }
+    }
+}
